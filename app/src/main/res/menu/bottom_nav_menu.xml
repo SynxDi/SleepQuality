@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/alarmFragment"
+        android:icon="@drawable/alarm"
+        android:title=""/>
+    <item
+        android:id="@+id/tipsFragment"
+        android:icon="@drawable/newsbaru"
+        android:title=""
+        />
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/profile"
+        android:title=""/>
+</menu>

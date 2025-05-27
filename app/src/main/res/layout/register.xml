@@ -62,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editText" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/emailEditText"
         android:layout_width="342dp"
         android:layout_height="58dp"
         android:layout_marginTop="20dp"
@@ -76,7 +76,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editText2" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/passwordEditText"
         android:layout_width="342dp"
         android:layout_height="58dp"
         android:layout_marginTop="20dp"
@@ -87,7 +87,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3" />
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
     <EditText
         android:id="@+id/editText5"
@@ -101,9 +101,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText4" />
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/registerButton"
         android:layout_width="253dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
@@ -116,5 +117,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText5" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/textLogin"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/montserratbold"
+        android:text="Already Have Account? Login here"
+        android:textColor="@color/white"
+        android:textSize="30px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".ProfileFragment">
+
+    <View
+        android:id="@+id/roundedHeader"
+        android:layout_width="match_parent"
+        android:layout_height="135dp"
+        android:background="@drawable/rounded_top" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:layout_marginTop="250dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp"
+            android:layout_margin="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- First and Last Name -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="First Name"
+                            android:textColor="#888"
+                            android:textSize="12sp"/>
+                        <TextView
+                            android:id="@+id/tvFirstName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserratbold"
+                            android:text="Galuh"
+                            android:textSize="16sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Last Name"
+                            android:textColor="#888"
+                            android:textSize="12sp"/>
+                        <TextView
+                            android:id="@+id/tvLastName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montserratbold"
+                            android:text="Bagaskara"
+                            android:textSize="16sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Email -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email"
+                    android:textColor="#888"
+                    android:textSize="12sp"/>
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/montserratbold"
+                    android:text="galuhyogabagaskarah1@gmail.com"
+                    android:paddingBottom="8dp"/>
+
+                <!-- Password -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Password"
+                    android:textColor="#888"
+                    android:textSize="12sp"/>
+                <TextView
+                    android:id="@+id/tvPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="*********"
+                    android:fontFamily="@font/montserratbold"
+                    android:textSize="16sp"
+                    android:paddingBottom="8dp"/>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#CCC"
+                    android:layout_marginVertical="8dp"/>
+
+                <!-- Weight, Height, Age -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Weight"
+                            android:textColor="#888"
+                            android:textSize="12sp"/>
+                        <TextView
+                            android:id="@+id/tvWeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/montserratbold"
+                            android:text="95kg"
+                            android:textSize="16sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Height"
+                            android:textColor="#888"
+                            android:textSize="12sp"/>
+                        <TextView
+                            android:id="@+id/tvHeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:text="180cm"
+                            android:fontFamily="@font/montserratbold"
+                            android:textSize="16sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Age"
+                            android:textColor="#888"
+                            android:textSize="12sp"/>
+                        <TextView
+                            android:id="@+id/tvAge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/montserratbold"
+                            android:text="22"
+                            android:textSize="16sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:text="Edit Profile"
+            android:textAllCaps="false"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/montserratbold"
+            android:background="@drawable/blue_profile_button"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp"
+            android:textAllCaps="false"
+            android:text="Change Password"
+            android:textColor="@color/white"
+            android:fontFamily="@font/montserratbold"
+            android:textSize="18dp"
+            android:background="@drawable/blue_profile_button"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonLogout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp"
+            android:textAllCaps="false"
+            android:text="Logout Account"
+            android:textColor="@color/white"
+            android:fontFamily="@font/montserratbold"
+            android:textSize="18dp"
+            android:background="@drawable/red_profile_button"
+            />
+    </LinearLayout>
+    </ScrollView>
+</FrameLayout>
