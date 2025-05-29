@@ -4,6 +4,8 @@ import android.content.Intent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -75,6 +77,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Login berhasil
                             FirebaseUser  user = mAuth.getCurrentUser ();
+                            SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("user_email", email);
+                            editor.apply(); // atau .commit() jika ingin sinkron
                             startActivity(new Intent(LoginActivity.this, MainNavigation.class));
                             finish();
                         } else {
