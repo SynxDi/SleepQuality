@@ -11,6 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -20,12 +23,15 @@ import androidx.core.view.WindowInsetsCompat;
 public class RegisterActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
+    DatabaseReference mDatabase;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance("https://sleepanalysis-ac0b7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users"); // Referensi ke node "users"
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.register);
@@ -59,27 +65,46 @@ public class RegisterActivity extends AppCompatActivity {
         Button registerButton = findViewById(R.id.registerButton);
         EditText emailInput = findViewById(R.id.emailEditText);
         EditText passwordInput = findViewById(R.id.passwordEditText);
+        EditText firstNameInput = findViewById(R.id.firstNameET);
+        EditText lastNameInput = findViewById(R.id.lastNameET);
+        EditText confirmPasswordInput = findViewById(R.id.confirmPasswordET);
+        String age = "";
+        String height = "";
+        String weight = "";
 
         registerButton.setOnClickListener(v -> {
             String email = emailInput.getText().toString().trim();
             String password = passwordInput.getText().toString().trim();
+            String firstName = firstNameInput.getText().toString().trim();
+            String lastName = lastNameInput.getText().toString().trim();
 
-            if (email.isEmpty() || password.isEmpty()) {
+            if (email.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
                 Toast.makeText(this, "Isi semua kolom", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(this, "Register berhasil", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(this, LoginActivity.class));
-                            finish();
-                        } else {
-                            Toast.makeText(this, "Gagal register: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
+                       .addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    // Dapatkan UID pengguna yang baru dibuat
+                    String userId = mAuth.getCurrentUser ().getUid();
+                    // Buat objek User
+                    User user = new User(firstName, lastName, email, password, age, height, weight);
+                    // Simpan data pengguna ke Realtime Database
+                    mDatabase.child(userId).setValue(user)
+                            .addOnCompleteListener(dbTask -> {
+                                if (dbTask.isSuccessful()) {
+                                    Toast.makeText(this, "Register berhasil", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(this, LoginActivity.class));
+                                    finish();
+                                } else {
+                                    Toast.makeText(this, "Gagal menyimpan data: " + dbTask.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            });
+                } else {
+                    Toast.makeText(this, "Gagal register: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
         });
-
     }
 }

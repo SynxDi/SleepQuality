@@ -34,7 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/firstNameET"
         android:layout_width="342dp"
         android:hint="First Name"
         android:fontFamily="@font/montserratbold"
@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/lastNameET"
         android:layout_width="342dp"
         android:layout_height="58dp"
         android:layout_marginTop="20dp"
@@ -59,7 +59,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/firstNameET" />
 
     <EditText
         android:id="@+id/emailEditText"
@@ -73,7 +73,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText2" />
+        app:layout_constraintTop_toBottomOf="@+id/lastNameET" />
 
     <EditText
         android:id="@+id/passwordEditText"
@@ -83,6 +83,7 @@
         android:background="@drawable/etlogin"
         android:textSize="14dp"
         android:hint="Password"
+        android:inputType="textPassword"
         android:fontFamily="@font/montserratbold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
@@ -90,7 +91,7 @@
         app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/confirmPasswordET"
         android:layout_width="342dp"
         android:layout_height="58dp"
         android:layout_marginTop="20dp"
@@ -98,6 +99,7 @@
         android:fontFamily="@font/montserratbold"
         android:hint="Confirm Password"
         android:textSize="14dp"
+        android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,7 +118,7 @@
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText5" />
+        app:layout_constraintTop_toBottomOf="@+id/confirmPasswordET" />
 
     <TextView
         android:layout_width="wrap_content"
