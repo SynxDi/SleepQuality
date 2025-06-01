@@ -17,6 +17,12 @@
             android:name=".AnalysisSleepActivity"
             android:exported="false" />
         <activity
+            android:name=".ArticleDetail"
+            android:exported="false" />
+        <activity
+            android:name=".AdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainNavigation"
             android:exported="false" />
         <activity

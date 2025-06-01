@@ -4,6 +4,11 @@ import android.content.Intent;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -26,6 +31,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class LoginActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
+    DatabaseReference db;
 
 
     @Override
@@ -35,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseDatabase.getInstance("https://sleepanalysis-ac0b7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("users");
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.login), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -72,6 +79,13 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
+            if (email.equals("admin") && password.equals("admin")) {
+                Intent admin = new Intent(LoginActivity.this, AdminActivity.class);
+                startActivity(admin);
+                return;
+            }
+
+
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
@@ -83,6 +97,10 @@ public class LoginActivity extends AppCompatActivity {
                             editor.apply(); // atau .commit() jika ingin sinkron
                             startActivity(new Intent(LoginActivity.this, MainNavigation.class));
                             finish();
+                            if (user != null) {
+                                // Fetch user data from Realtime Database
+                                fetchUserData(user.getEmail());
+                            }
                         } else {
                             // Tangani kesalahan
                             String errorMessage = "Authentication failed.";
@@ -92,8 +110,45 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                         }
                     });
+            });
 
+        }
+    private void fetchUserData(String email) {
+        db.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String firstName = snapshot.child("firstName").getValue(String.class);
+                        String lastName = snapshot.child("lastName").getValue(String.class);
+                        String emailName = snapshot.child("email").getValue(String.class);
+                        String WeightText = snapshot.child("weight").getValue(String.class);
+                        String HeightText = snapshot.child("height").getValue(String.class);
+                        String AgeText = snapshot.child("age").getValue(String.class);
+                        // Save to SharedPreferences
+                        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("firstName", firstName);
+                        editor.putString("lastName", lastName);
+                        editor.putString("user_email", emailName);
+                        editor.putString("weight", WeightText);
+                        editor.putString("height", HeightText);
+                        editor.putString("age", AgeText);
+                        editor.apply();
+                    }
+                    // Start MainNavigation Activity
+                    startActivity(new Intent(LoginActivity.this, MainNavigation.class));
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "User  not found.", Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w("TAG", "loadUser Data:onCancelled", databaseError.toException());
+            }
         });
     }
+
 }
