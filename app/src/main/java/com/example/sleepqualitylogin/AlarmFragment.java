@@ -1,5 +1,6 @@
 package com.example.sleepqualitylogin;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -62,6 +63,7 @@ public class AlarmFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Button sleepButton = view.findViewById(R.id.sleepButton);
         Button wakeupButton = view.findViewById(R.id.wakeupButton);
+        Button AnalysisButton = view.findViewById(R.id.anotherButton);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyAppPrefs", getActivity().MODE_PRIVATE);
         databaseReference = FirebaseDatabase.getInstance("https://sleepanalysis-ac0b7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("tracker");
@@ -105,6 +107,14 @@ public class AlarmFragment extends Fragment {
             public void onClick(View v) {
                 timePickerWakeupFragment timePickerWakeup = new timePickerWakeupFragment();
                 timePickerWakeup.show(getChildFragmentManager(), "timePickerWakeup");
+            }
+        });
+
+        AnalysisButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AnalysisSleepActivity.class);
+                startActivity(intent);
             }
         });
     }
