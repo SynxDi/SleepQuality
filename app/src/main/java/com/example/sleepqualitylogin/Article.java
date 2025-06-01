@@ -1,10 +1,24 @@
 package com.example.sleepqualitylogin;
 
 public class Article {
-    public String author;
-    public String title;
-    public String content;
+    public String author;  // Existing variable
+    public String title;   // Existing variable
+    public String content; // Existing variable
+    public String date;    // New variable for date
 
+    // Default constructor
+    public Article() {
+    }
+
+    // Constructor with parameters
+    public Article(String author, String title, String content, String date) {
+        this.author = author;
+        this.title = title;
+        this.content = content;
+        this.date = date; // Initialize the date field
+    }
+
+    // Getters
     public String getAuthor() {
         return author;
     }
@@ -17,12 +31,24 @@ public class Article {
         return content;
     }
 
-    public Article() {
+    public String getDate() {
+        return date; // Getter for the date
     }
-    public Article(String author, String title, String content) {
+
+    // Setters (optional)
+    public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setContent(String content) {
         this.content = content;
     }
-}
 
+    public void setDate(String date) {
+        this.date = date; // Setter for the date
+    }
+}
