@@ -109,7 +109,7 @@ public class ProfileFragment extends Fragment {
         AppCompatButton buttonLogout = view.findViewById(R.id.buttonLogout);
         buttonLogout.setOnClickListener(v -> {
             // Clear SharedPreferences if needed
-            SharedPreferences prefs = requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+            SharedPreferences prefs = requireActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
             prefs.edit().clear().apply();
 
             // Logout from Firebase
