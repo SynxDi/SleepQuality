@@ -1,5 +1,7 @@
 package com.example.sleepqualitylogin;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,13 +39,19 @@ public class AnalysisSleepActivity extends AppCompatActivity {
     private DatabaseReference trackerRef;
     private static final String TAG = "TrackerActivity";
 
-    private String filterEmail = "paler@gmail.com";
     private TextView tvEmpty;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analysis_sleep);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        String email = sharedPreferences.getString("user_email", null);
+        String age = sharedPreferences.getString("age", "Age");
+
+        Log.d("ini email ditempat", email);
+        Log.d("ini age ditempat", age);
 
         rvTrackerData = findViewById(R.id.rvTrackerData);
         tvEmpty = findViewById(R.id.tvEmpty);
@@ -54,7 +62,7 @@ public class AnalysisSleepActivity extends AppCompatActivity {
 
         trackerRef = FirebaseDatabase.getInstance("https://sleepanalysis-ac0b7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("tracker");
 
-        fetchLast7DaysDataWithEmailFilter(filterEmail);
+        fetchLast7DaysDataWithEmailFilter(email);
     }
 
     private void fetchLast7DaysDataWithEmailFilter(final String emailFilter) {
