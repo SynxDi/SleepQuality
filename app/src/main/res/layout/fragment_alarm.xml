@@ -1,79 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/alarmFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/alarmFragment"
+    android:background="@drawable/gradientbackground"
     tools:context=".AlarmFragment">
 
+    <!-- Header di kiri atas -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/headerLayout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center_horizontal"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:layout_gravity="top|start"
+        android:padding="16dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/baseline_person_24"
+            android:contentDescription="User Icon"
+            android:layout_marginEnd="8dp"
+            app:tint="#FFFFFF" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/helloText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ALARM" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Sleep"
-                android:gravity="center"
-                android:padding="8dp" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/sleepButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Click Me"
-                android:padding="8dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Wake Up"
-                android:gravity="center"
-                android:padding="8dp" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/wakeupButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Click Me"
-                android:padding="8dp" />
-
-        </LinearLayout>
-
-        <!-- Add the new button here with a unique ID -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/anotherButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Another Button"
-            android:padding="8dp" />
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:elevation="8dp"
+            android:padding="24dp"
+            android:layout_margin="16dp"
+            android:backgroundTint="#FFFFFF"
+            android:layout_gravity="center"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:layoutDirection="ltr"
+            android:background="@drawable/card_background">
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="⏰ Add Sleep Time Data"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:gravity="center"
+                android:paddingBottom="24dp" />
+
+            <!-- Sleep Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="💤 Sleep"
+                    android:textSize="30sp"
+                    android:textColor="#666666"
+                    android:paddingBottom="8dp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/sleepButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Sleep Data"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#4CAF50"
+                    android:paddingHorizontal="32dp"
+                    android:paddingVertical="12dp"
+                    android:background="@drawable/button_background" />
+            </LinearLayout>
+
+            <!-- Wake Up Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🌅 Wake Up"
+                    android:textSize="30sp"
+                    android:textColor="#666666"
+                    android:paddingBottom="8dp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/wakeupButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Wake Up data"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#FF9800"
+                    android:paddingHorizontal="32dp"
+                    android:paddingVertical="12dp"
+                    android:background="@drawable/button_background" />
+            </LinearLayout>
+
+            <!-- Another Button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⚙️ View past 7 days analysis data"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:textColor="#666666"
+                    android:paddingBottom="8dp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/anotherButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="View Here!"
+                    android:textColor="@android:color/white"
+                    android:backgroundTint="#3F51B5"
+                    android:paddingHorizontal="32dp"
+                    android:paddingVertical="12dp"
+                    android:background="@drawable/button_background" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -66,6 +67,9 @@ public class AlarmFragment extends Fragment {
         Button AnalysisButton = view.findViewById(R.id.anotherButton);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyAppPrefs", getActivity().MODE_PRIVATE);
+        String email = sharedPreferences.getString("user_email", null);
+        TextView helloText = view.findViewById(R.id.helloText);
+        helloText.setText("Hello, " + email);
         databaseReference = FirebaseDatabase.getInstance("https://sleepanalysis-ac0b7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("tracker");
 
         sleepButton.setOnClickListener(new View.OnClickListener() {
