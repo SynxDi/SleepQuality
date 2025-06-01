@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:text="Judul Artikel"
             android:textStyle="bold"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textColor="#212121"
             android:maxLines="2"
             android:ellipsize="end" />
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:text="Author"
             android:textStyle="italic"
-            android:textSize="14sp"
+            android:textSize="10sp"
             android:textColor="#757575"
             android:layout_marginTop="4dp" />
 

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -56,25 +57,72 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Inisialisasi FirebaseAuth
+        // Initialize FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
+
+        // Get user data from SharedPreferences
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        String firstName = sharedPreferences.getString("firstName", "First Name");
+        String lastName = sharedPreferences.getString("lastName", "Last Name");
+        String email = sharedPreferences.getString("user_email", "Email");
+        String weight = sharedPreferences.getString("weight", "Weight");
+        String height = sharedPreferences.getString("height", "Height");
+        String age = sharedPreferences.getString("age", "Age");
+
+        // Update TextViews with user data
+        TextView tvFirstName = view.findViewById(R.id.tvFirstName);
+        TextView tvLastName = view.findViewById(R.id.tvLastName);
+        TextView tvEmail = view.findViewById(R.id.tvEmail);
+        TextView tvFullName = view.findViewById(R.id.FullNameText);
+        TextView tvWeight = view.findViewById(R.id.tvWeight);
+        TextView tvHeight = view.findViewById(R.id.tvHeight);
+        TextView tvAge = view.findViewById(R.id.tvAge);
+        tvFirstName.setText(firstName);
+        tvLastName.setText(lastName);
+        tvEmail.setText(email);
+        tvFullName.setText(firstName+" "+lastName);
+
+//        tvWeight.setText(weight);
+//        tvHeight.setText(height);
+//        tvAge.setText(age);
+
+        if (weight == null || weight == "") {
+            tvWeight.setText("-");
+        } else {
+            tvWeight.setText(weight+"kg");
+        }
+
+        if (height == null || height == "") {
+            tvHeight.setText("-");
+        } else {
+            tvHeight.setText(height+"cm");
+        }
+
+        if (age == null || age == "") {
+            tvAge.setText("-");
+        } else {
+            tvAge.setText(age);
+        }
+
+
 
         AppCompatButton buttonLogout = view.findViewById(R.id.buttonLogout);
         buttonLogout.setOnClickListener(v -> {
-            // Menghapus SharedPreferences jika diperlukan
+            // Clear SharedPreferences if needed
             SharedPreferences prefs = requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
             prefs.edit().clear().apply();
 
-            // Logout dari Firebase
+            // Logout from Firebase
             if (mAuth != null) {
                 mAuth.signOut();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             } else {
-                // Menangani kasus jika mAuth null
+                // Handle case if mAuth is null
                 Toast.makeText(getActivity(), "Gagal logout, coba lagi.", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 }
