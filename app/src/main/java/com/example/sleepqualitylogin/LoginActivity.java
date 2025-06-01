@@ -72,6 +72,13 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
+            if (email.equals("admin") && password.equals("admin")) {
+                Intent admin = new Intent(LoginActivity.this, AdminActivity.class);
+                startActivity(admin);
+                return;
+            }
+
+
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
