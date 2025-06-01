@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:paddingTop="12dp"
+    android:paddingHorizontal="16dp"
     android:background="@android:color/white">
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Last 7 Days Tracker Data"
-        android:textSize="20sp"
+        android:text="Last 7 days"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:paddingBottom="12dp"
         android:textColor="@android:color/black" />
@@ -20,8 +22,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTrackerData"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:contentDescription="list"
         android:layout_weight="1"
+        tools:listitem="@layout/activity_analysis_sleep_card"
+        tools:itemCount="7"
         android:scrollbars="vertical" />
 
     <!-- Pesan jika data kosong -->
@@ -29,20 +34,10 @@
         android:id="@+id/tvEmpty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tidak ada data untuk 7 hari terakhir"
+        android:text="No records of sleep."
         android:textSize="16sp"
         android:textColor="#999999"
         android:visibility="gone"
         android:layout_gravity="center_horizontal"
         android:padding="8dp"/>
-
-    <TextView
-        android:id="@+id/tvAverageDuration"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Rata-rata Durasi Tidur:"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:paddingBottom="8dp" />
 </LinearLayout>

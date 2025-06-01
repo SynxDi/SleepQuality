@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -37,7 +39,6 @@ public class AnalysisSleepActivity extends AppCompatActivity {
 
     private String filterEmail = "paler@gmail.com";
     private TextView tvEmpty;
-    private TextView tvAverageDuration; // Tambahan
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +47,6 @@ public class AnalysisSleepActivity extends AppCompatActivity {
 
         rvTrackerData = findViewById(R.id.rvTrackerData);
         tvEmpty = findViewById(R.id.tvEmpty);
-        tvAverageDuration = findViewById(R.id.tvAverageDuration); // Tambahan
 
         rvTrackerData.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TrackerAdapter(trackerList);
@@ -54,7 +54,6 @@ public class AnalysisSleepActivity extends AppCompatActivity {
 
         trackerRef = FirebaseDatabase.getInstance("https://sleepanalysis-ac0b7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("tracker");
 
-        Log.d(TAG, "onCreate: Fetching data for email = " + filterEmail);
         fetchLast7DaysDataWithEmailFilter(filterEmail);
     }
 
@@ -62,12 +61,10 @@ public class AnalysisSleepActivity extends AppCompatActivity {
         trackerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.d(TAG, "onDataChange: Called");
                 trackerList.clear();
 
                 if (!snapshot.exists()) {
                     tvEmpty.setVisibility(View.VISIBLE);
-                    tvAverageDuration.setVisibility(View.GONE);
                     adapter.notifyDataSetChanged();
                     return;
                 }
@@ -95,7 +92,6 @@ public class AnalysisSleepActivity extends AppCompatActivity {
                     }
                 }
 
-                // Sort descending by date
                 trackerList.sort((t1, t2) -> {
                     try {
                         Date d1 = sdf.parse(t1.date);
@@ -110,47 +106,8 @@ public class AnalysisSleepActivity extends AppCompatActivity {
 
                 if (trackerList.isEmpty()) {
                     tvEmpty.setVisibility(View.VISIBLE);
-                    tvAverageDuration.setVisibility(View.GONE);
                 } else {
                     tvEmpty.setVisibility(View.GONE);
-                    tvAverageDuration.setVisibility(View.VISIBLE);
-
-                    // Hitung rata-rata durasi tidur
-                    long totalSleepDuration = 0;
-                    int validCount = 0;
-
-                    for (Tracker tracker : trackerList) {
-                        if (tracker.sleepTime != null && tracker.wakeUpTime != null) {
-                            long duration = tracker.wakeUpTime - tracker.sleepTime;
-                            if (duration > 0) {
-                                totalSleepDuration += duration;
-                                validCount++;
-                            }
-                        }
-                    }
-
-                    if (validCount > 0) {
-                        long avgDurationMs = totalSleepDuration / validCount;
-                        long totalMinutes = avgDurationMs / (1000 * 60);
-                        long hours = totalMinutes / 60;
-                        long minutes = totalMinutes % 60;
-
-                        String avgText = "Rata-rata Durasi Tidur: " + hours + " jam " + minutes + " menit\n";
-
-                        if (hours >= 8) {
-                            avgText += "Pesan: A (Durasi tidur sangat baik)";
-                        } else if (hours >= 6) {
-                            avgText += "Pesan: B (Durasi tidur cukup)";
-                        } else if (hours >= 4) {
-                            avgText += "Pesan: C (Durasi tidur kurang)";
-                        } else {
-                            avgText += "Pesan: D (Durasi tidur sangat kurang)";
-                        }
-
-                        tvAverageDuration.setText(avgText);
-                    } else {
-                        tvAverageDuration.setText("Tidak ada data tidur yang valid.");
-                    }
                 }
             }
 
@@ -183,42 +140,51 @@ public class AnalysisSleepActivity extends AppCompatActivity {
         @NonNull
         @Override
         public TrackerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_2, parent, false);
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.activity_analysis_sleep_card, parent, false);
             return new TrackerViewHolder(view);
-        }
-
-        private String calculateSleepDuration(Long sleepTime, Long wakeUpTime) {
-            long durationMs = wakeUpTime - sleepTime;
-            if (durationMs <= 0) return "Invalid";
-
-            long totalMinutes = durationMs / (1000 * 60);
-            long hours = totalMinutes / 60;
-            long minutes = totalMinutes % 60;
-
-            return hours + " jam " + minutes + " menit";
         }
 
         @Override
         public void onBindViewHolder(@NonNull TrackerViewHolder holder, int position) {
             Tracker item = dataList.get(position);
-            holder.tv1.setText(item.email);
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("Tanggal: ").append(item.date);
-
-            if (item.sleepTime != null) {
-                sb.append("\nTidur: ").append(formatTimestamp(item.sleepTime));
+            try {
+                SimpleDateFormat sdfInput = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Date date = sdfInput.parse(item.date);
+                SimpleDateFormat sdfDay = new SimpleDateFormat("EEE", Locale.getDefault());
+                holder.dayText.setText(sdfDay.format(date));
+            } catch (Exception e) {
+                holder.dayText.setText(item.date);
             }
 
-            if (item.wakeUpTime != null) {
-                sb.append("\nBangun: ").append(formatTimestamp(item.wakeUpTime));
-            }
+            String start = item.sleepTime != null ? formatTime(item.sleepTime) : "??";
+            String end = item.wakeUpTime != null ? formatTime(item.wakeUpTime) : "??";
+            holder.rangeText.setText(start + " - " + end);
 
-            if (item.sleepTime != null && item.wakeUpTime != null) {
-                sb.append("\nDurasi Tidur: ").append(calculateSleepDuration(item.sleepTime, item.wakeUpTime));
-            }
+            if (item.sleepTime != null && item.wakeUpTime != null && item.wakeUpTime > item.sleepTime) {
+                long durationMs = item.wakeUpTime - item.sleepTime;
+                long totalMinutes = durationMs / (1000 * 60);
+                long hours = totalMinutes / 60;
+                long minutes = totalMinutes % 60;
 
-            holder.tv2.setText(sb.toString());
+                if (hours >= 8) {
+                    holder.background.setBackgroundResource(R.drawable.alarm_gradient_a);
+                } else if (hours >= 6) {
+                    holder.background.setBackgroundResource(R.drawable.alarm_gradient_b);
+                } else if (hours >= 4) {
+                    holder.background.setBackgroundResource(R.drawable.alarm_gradient_c);
+                } else {
+                    holder.background.setBackgroundResource(R.drawable.alarm_gradient_d);
+                }
+
+
+                holder.durationHourText.setText(hours + "H");
+                holder.durationMinuteText.setText(minutes + "M");
+            } else {
+                holder.durationHourText.setText("--");
+                holder.durationMinuteText.setText("--");
+            }
         }
 
         @Override
@@ -226,22 +192,24 @@ public class AnalysisSleepActivity extends AppCompatActivity {
             return dataList.size();
         }
 
+        private String formatTime(Long ms) {
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+            sdf.setTimeZone(TimeZone.getDefault());
+            return sdf.format(new Date(ms));
+        }
+
         class TrackerViewHolder extends RecyclerView.ViewHolder {
-            TextView tv1, tv2;
+            TextView dayText, rangeText, durationHourText, durationMinuteText;
+            RelativeLayout background;
 
             public TrackerViewHolder(@NonNull View itemView) {
                 super(itemView);
-                tv1 = itemView.findViewById(android.R.id.text1);
-                tv2 = itemView.findViewById(android.R.id.text2);
+                dayText = itemView.findViewById(R.id.dayText);
+                rangeText = itemView.findViewById(R.id.rangeText);
+                durationHourText = itemView.findViewById(R.id.durationHourText);
+                durationMinuteText = itemView.findViewById(R.id.durationMinuteText);
+                background = itemView.findViewById(R.id.background);
             }
-        }
-
-        private String formatTimestamp(Long ms) {
-            if (ms == null) return "";
-            Date date = new Date(ms);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-            sdf.setTimeZone(TimeZone.getDefault());
-            return sdf.format(date);
         }
     }
 }
