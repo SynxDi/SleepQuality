@@ -155,14 +155,14 @@ public class AlarmFragment extends Fragment {
                 float avgHours = entries.size() > 0 ? totalHours / entries.size() : 0;
 
                 if (avgHours >= 8) {
-                    qualitySummaryText.setText("Great sleep");
+                    qualitySummaryText.setText("Well rested");
                     qualitySummaryBackground.setBackgroundResource(R.drawable.alarm_gradient_a);
 
                 } else if (avgHours >= 6) {
                     qualitySummaryText.setText("Decent sleep");
                     qualitySummaryBackground.setBackgroundResource(R.drawable.alarm_gradient_b);
                 } else if (avgHours >= 4) {
-                    qualitySummaryText.setText("Too little sleep");
+                    qualitySummaryText.setText("Lack of sleep");
                     qualitySummaryBackground.setBackgroundResource(R.drawable.alarm_gradient_c);
                 } else {
                     qualitySummaryText.setText("Severely sleep-deprived");

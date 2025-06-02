@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -40,6 +42,9 @@ public class AnalysisSleepActivity extends AppCompatActivity {
     private String filterEmail = "paler@gmail.com";
     private TextView tvEmpty;
 
+    private TextView summaryHour, summaryMinutes, summaryTitle, summaryTips;
+    private RelativeLayout summaryBackground;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,12 +52,21 @@ public class AnalysisSleepActivity extends AppCompatActivity {
 
         rvTrackerData = findViewById(R.id.rvTrackerData);
         tvEmpty = findViewById(R.id.tvEmpty);
+        summaryHour = findViewById(R.id.summaryHour);
+        summaryMinutes = findViewById(R.id.summaryMinutes);
+        summaryTitle = findViewById(R.id.summaryTitle);
+        summaryTips = findViewById(R.id.summaryTips);
+        summaryBackground = findViewById(R.id.summaryBackground);
 
         rvTrackerData.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TrackerAdapter(trackerList);
         rvTrackerData.setAdapter(adapter);
 
         trackerRef = FirebaseDatabase.getInstance("https://sleepanalysis-ac0b7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("tracker");
+
+        // Back button logic
+        ImageButton btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> finish());
 
         fetchLast7DaysDataWithEmailFilter(filterEmail);
     }
@@ -79,7 +93,6 @@ public class AnalysisSleepActivity extends AppCompatActivity {
                     if (tracker != null && tracker.date != null && tracker.email != null) {
                         try {
                             Date trackerDate = sdf.parse(tracker.date);
-
                             if (trackerDate != null
                                     && !trackerDate.before(sevenDaysAgo)
                                     && !trackerDate.after(today)
@@ -102,13 +115,51 @@ public class AnalysisSleepActivity extends AppCompatActivity {
                     }
                 });
 
-                adapter.notifyDataSetChanged();
+                long totalSleepMillis = 0;
+                int validCount = 0;
 
-                if (trackerList.isEmpty()) {
-                    tvEmpty.setVisibility(View.VISIBLE);
-                } else {
-                    tvEmpty.setVisibility(View.GONE);
+                for (Tracker tracker : trackerList) {
+                    if (tracker.sleepTime != null && tracker.wakeUpTime != null && tracker.wakeUpTime > tracker.sleepTime) {
+                        totalSleepMillis += (tracker.wakeUpTime - tracker.sleepTime);
+                        validCount++;
+                    }
                 }
+
+                if (validCount > 0) {
+                    long avgSleepMillis = totalSleepMillis / validCount;
+                    long avgMinutes = avgSleepMillis / (1000 * 60);
+                    long hours = avgMinutes / 60;
+                    long minutes = avgMinutes % 60;
+
+                    summaryHour.setText(hours + "H");
+                    summaryMinutes.setText(minutes + "M");
+
+                    if (hours >= 8) {
+                        summaryBackground.setBackgroundResource(R.drawable.alarm_gradient_a);
+                        summaryTitle.setText("Well rested");
+                        summaryTips.setText("You're getting enough sleep!");
+                    } else if (hours >= 6) {
+                        summaryBackground.setBackgroundResource(R.drawable.alarm_gradient_b);
+                        summaryTitle.setText("Decent sleep");
+                        summaryTips.setText("Try to get a little more rest!");
+                    } else if (hours >= 4) {
+                        summaryBackground.setBackgroundResource(R.drawable.alarm_gradient_c);
+                        summaryTitle.setText("Lack of sleep");
+                        summaryTips.setText("Get some more sleep!");
+                    } else {
+                        summaryBackground.setBackgroundResource(R.drawable.alarm_gradient_d);
+                        summaryTitle.setText("Severely sleep-deprived");
+                        summaryTips.setText("Sleep now if possible!");
+                    }
+                } else {
+                    summaryHour.setText("--");
+                    summaryMinutes.setText("--");
+                    summaryTitle.setText("No Data");
+                    summaryTips.setText("Not enough sleep records.");
+                }
+
+                adapter.notifyDataSetChanged();
+                tvEmpty.setVisibility(trackerList.isEmpty() ? View.VISIBLE : View.GONE);
             }
 
             @Override
@@ -177,7 +228,6 @@ public class AnalysisSleepActivity extends AppCompatActivity {
                 } else {
                     holder.background.setBackgroundResource(R.drawable.alarm_gradient_d);
                 }
-
 
                 holder.durationHourText.setText(hours + "H");
                 holder.durationMinuteText.setText(minutes + "M");
