@@ -80,8 +80,13 @@ public class AlarmFragment extends Fragment {
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyAppPrefs", getActivity().MODE_PRIVATE);
         String email = sharedPreferences.getString("user_email", null);
+        String firstName = sharedPreferences.getString("firstName", "First Name");
+        String lastName = sharedPreferences.getString("lastName", "Last Name");
+        String age = sharedPreferences.getString("age", "Age");
+
         TextView helloText = view.findViewById(R.id.helloText);
-        helloText.setText("Hello, " + email);
+        helloText.setText("Hello, " + firstName + " " + lastName);
+        Log.d("ini age", age);
 
         TextView sleepAvgText = view.findViewById(R.id.sleepAvgText);
         TextView qualitySummaryText = view.findViewById(R.id.qualitySummaryText);
