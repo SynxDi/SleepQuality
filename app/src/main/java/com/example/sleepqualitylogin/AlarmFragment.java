@@ -13,16 +13,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AlarmFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
 public class AlarmFragment extends Fragment {
 
     private DatabaseReference databaseReference;
@@ -68,58 +80,177 @@ public class AlarmFragment extends Fragment {
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyAppPrefs", getActivity().MODE_PRIVATE);
         String email = sharedPreferences.getString("user_email", null);
+        String firstName = sharedPreferences.getString("firstName", "First Name");
+        String lastName = sharedPreferences.getString("lastName", "Last Name");
+        String age = sharedPreferences.getString("age", "Age");
+
         TextView helloText = view.findViewById(R.id.helloText);
-        helloText.setText("Hello, " + email);
+        helloText.setText("Hello, " + firstName + " " + lastName);
+        Log.d("ini age", age);
+
+        TextView sleepAvgText = view.findViewById(R.id.sleepAvgText);
+        TextView qualitySummaryText = view.findViewById(R.id.qualitySummaryText);
+        FrameLayout qualitySummaryBackground = view.findViewById(R.id.qualitySummaryBackground);
+        BarChart barChart = view.findViewById(R.id.barChart);
         databaseReference = FirebaseDatabase.getInstance("https://sleepanalysis-ac0b7-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("tracker");
 
-        sleepButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String checkUniqueKey = sharedPreferences.getString("uniqueKey", null);
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        ArrayList<String> dayLabels = new ArrayList<>();
 
-                if (checkUniqueKey != null) {
-                    new android.app.AlertDialog.Builder(getActivity())
-                            .setTitle("Confirm Action")
-                            .setMessage("Anda sebelumnya telah memasukkan jam tidur. Apakah Anda ingin menghapus?")
-                            .setPositiveButton("Yes", (dialogInterface, i) -> {
-                                databaseReference.child(checkUniqueKey).removeValue()
-                                        .addOnSuccessListener(aVoid -> {
-                                            Log.d("Firebase", "Data berhasil dihapus.");
-                                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                                            editor.remove("uniqueKey");
-                                            editor.apply();
-                                        })
-                                        .addOnFailureListener(databaseError -> {
-                                            Log.e("Firebase", "Gagal menghapus data: " + databaseError.getMessage());
-                                        });
-                                dialogInterface.dismiss();
-                            })
-                            .setNegativeButton("No", (dialogInterface, i) -> {
-                                dialogInterface.dismiss();
-                            })
-                            .show();
-                } else {
-                    // Only show TimePicker if no uniqueKey is present
-                    TimePickerFragment timePicker = new TimePickerFragment();
-                    timePicker.show(getChildFragmentManager(), "timePicker");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        SimpleDateFormat dayFormatter = new SimpleDateFormat("EEE", Locale.getDefault()); // e.g., Mon, Tue
+
+        Date today = new Date();
+        Date sevenDaysAgo = new Date(today.getTime() - (7L * 24 * 60 * 60 * 1000));
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<AnalysisSleepActivity.Tracker> trackerList = new ArrayList<>();
+
+                for (DataSnapshot childSnap : snapshot.getChildren()) {
+                    AnalysisSleepActivity.Tracker tracker = childSnap.getValue(AnalysisSleepActivity.Tracker.class);
+                    if (tracker != null && tracker.date != null && tracker.email != null && tracker.email.equals(email)) {
+                        try {
+                            Date trackerDate = sdf.parse(tracker.date);
+                            if (trackerDate != null && !trackerDate.before(sevenDaysAgo) && !trackerDate.after(today)) {
+                                trackerList.add(tracker);
+                            }
+                        } catch (Exception e) {
+                            Log.e("AlarmFragment", "Date parsing error", e);
+                        }
+                    }
                 }
+
+                trackerList.sort((t1, t2) -> {
+                    try {
+                        return sdf.parse(t1.date).compareTo(sdf.parse(t2.date));
+                    } catch (Exception e) {
+                        return 0;
+                    }
+                });
+
+                if (trackerList.size() > 7) {
+                    trackerList = new ArrayList<>(trackerList.subList(trackerList.size() - 7, trackerList.size()));
+                }
+
+                int index = 0;
+                for (AnalysisSleepActivity.Tracker tracker : trackerList) {
+                    if (tracker.sleepTime != null && tracker.wakeUpTime != null) {
+                        long durationMs = tracker.wakeUpTime - tracker.sleepTime;
+                        if (durationMs > 0) {
+                            float hours = durationMs / (1000f * 60f * 60f); // Convert to hours
+                            entries.add(new BarEntry(index, hours));
+                            try {
+                                Date trackerDate = sdf.parse(tracker.date);
+                                String label = dayFormatter.format(trackerDate);
+                                dayLabels.add(label);
+                            } catch (Exception e) {
+                                dayLabels.add("?");
+                            }
+                            index++;
+                        }
+                    }
+                }
+
+                float totalHours = 0;
+                for (BarEntry entry : entries) {
+                    totalHours += entry.getY();
+                }
+                float avgHours = entries.size() > 0 ? totalHours / entries.size() : 0;
+
+                if (avgHours >= 8) {
+                    qualitySummaryText.setText("Well rested");
+                    qualitySummaryBackground.setBackgroundResource(R.drawable.alarm_gradient_a);
+
+                } else if (avgHours >= 6) {
+                    qualitySummaryText.setText("Decent sleep");
+                    qualitySummaryBackground.setBackgroundResource(R.drawable.alarm_gradient_b);
+                } else if (avgHours >= 4) {
+                    qualitySummaryText.setText("Lack of sleep");
+                    qualitySummaryBackground.setBackgroundResource(R.drawable.alarm_gradient_c);
+                } else {
+                    qualitySummaryText.setText("Severely sleep-deprived");
+                    qualitySummaryBackground.setBackgroundResource(R.drawable.alarm_gradient_d);
+                }
+
+                updateChart(barChart, entries, dayLabels);
+                sleepAvgText.setText(String.format(Locale.getDefault(), "AVG %.0fH", avgHours));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("AlarmFragment", "Database error", error.toException());
             }
         });
 
-        wakeupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                timePickerWakeupFragment timePickerWakeup = new timePickerWakeupFragment();
-                timePickerWakeup.show(getChildFragmentManager(), "timePickerWakeup");
+        sleepButton.setOnClickListener(v -> {
+            String checkUniqueKey = sharedPreferences.getString("uniqueKey", null);
+            if (checkUniqueKey != null) {
+                new android.app.AlertDialog.Builder(getActivity())
+                        .setTitle("Confirm Action")
+                        .setMessage("Anda sebelumnya telah memasukkan jam tidur. Apakah Anda ingin menghapus?")
+                        .setPositiveButton("Yes", (dialogInterface, i) -> {
+                            databaseReference.child(checkUniqueKey).removeValue()
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("Firebase", "Data berhasil dihapus.");
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.remove("uniqueKey");
+                                        editor.apply();
+                                    })
+                                    .addOnFailureListener(databaseError -> {
+                                        Log.e("Firebase", "Gagal menghapus data: " + databaseError.getMessage());
+                                    });
+                            dialogInterface.dismiss();
+                        })
+                        .setNegativeButton("No", (dialogInterface, i) -> dialogInterface.dismiss())
+                        .show();
+            } else {
+                TimePickerFragment timePicker = new TimePickerFragment();
+                timePicker.show(getChildFragmentManager(), "timePicker");
             }
         });
 
-        AnalysisButton.setOnClickListener(new View.OnClickListener() {
+        wakeupButton.setOnClickListener(v -> {
+            timePickerWakeupFragment timePickerWakeup = new timePickerWakeupFragment();
+            timePickerWakeup.show(getChildFragmentManager(), "timePickerWakeup");
+        });
+
+        AnalysisButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AnalysisSleepActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void updateChart(BarChart barChart, ArrayList<BarEntry> entries, ArrayList<String> labels) {
+        BarDataSet dataSet = new BarDataSet(entries, "Durasi Tidur");
+        dataSet.setColor(getResources().getColor(R.color.sleep_blue));
+
+        BarData barData = new BarData(dataSet);
+        barData.setDrawValues(false);
+        barData.setBarWidth(0.9f);
+
+        barChart.setData(barData);
+        barChart.setFitBars(true);
+        barChart.getLegend().setEnabled(false);
+        barChart.getDescription().setEnabled(false);
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+        xAxis.setGranularity(1f);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        YAxis leftAxis = barChart.getAxisLeft();
+        leftAxis.setGranularity(1f);
+        leftAxis.setValueFormatter(new ValueFormatter() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AnalysisSleepActivity.class);
-                startActivity(intent);
+            public String getFormattedValue(float value) {
+                return ((int) value) + "h";
             }
         });
+
+        barChart.getAxisRight().setEnabled(false);
+        barChart.invalidate();
     }
 }
