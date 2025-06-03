@@ -170,7 +170,7 @@ public class AlarmFragment extends Fragment {
                     qualitySummaryText.setText("Lack of sleep");
                     qualitySummaryBackground.setBackgroundResource(R.drawable.alarm_gradient_c);
                 } else {
-                    qualitySummaryText.setText("Severely sleep-deprived");
+                    qualitySummaryText.setText("Sleep Deprived");
                     qualitySummaryBackground.setBackgroundResource(R.drawable.alarm_gradient_d);
                 }
 

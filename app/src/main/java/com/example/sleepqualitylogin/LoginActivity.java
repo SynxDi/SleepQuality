@@ -79,6 +79,16 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
+            if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+                Toast.makeText(this, "Format email not valid", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!password.matches("^(?=.*[A-Z])(?=.*\\d).{8,}$")) {
+                Toast.makeText(this, "Password must contain at least one uppercase letter and one number", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (email.equals("admin") && password.equals("admin")) {
                 Intent admin = new Intent(LoginActivity.this, AdminActivity.class);
                 startActivity(admin);

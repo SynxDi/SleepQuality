@@ -77,9 +77,25 @@ public class RegisterActivity extends AppCompatActivity {
             String password = passwordInput.getText().toString().trim();
             String firstName = firstNameInput.getText().toString().trim();
             String lastName = lastNameInput.getText().toString().trim();
+            String confirmPassword = confirmPasswordInput.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
                 Toast.makeText(this, "Isi semua kolom", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+                Toast.makeText(this, "Format email not valid", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!password.matches("^(?=.*[A-Z])(?=.*\\d).{8,}$")) {
+                Toast.makeText(this, "Password must contain at least one uppercase letter and one number", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!password.equals(confirmPassword)) {
+                Toast.makeText(this, "Password field does not match the confirm password field", Toast.LENGTH_SHORT).show();
                 return;
             }
 
