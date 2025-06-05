@@ -5,12 +5,12 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     card_view:cardCornerRadius="12dp"
-    card_view:cardElevation="4dp"
-    android:background="@color/white">
+    card_view:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        style="@style/CardBackground"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -19,9 +19,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Judul Artikel"
+            style="@style/TextColor"
             android:textStyle="bold"
             android:textSize="14sp"
-            android:textColor="#212121"
             android:maxLines="2"
             android:ellipsize="end" />
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    style="@style/ScreenBackground"
     tools:context=".ProfileFragment">
 
 
@@ -27,7 +27,7 @@
         android:id="@+id/roundedHeader"
         android:layout_width="match_parent"
         android:layout_height="135dp"
-        android:background="@drawable/rounded_top"
+        style="@style/RoundedBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,6 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        style="@style/TextColor"
         android:fontFamily="@font/montserratbold"
         android:text="Galuh Yoga Bagaskara"
         android:textSize="28dp"
@@ -91,6 +92,7 @@
                             android:textSize="12sp"/>
                         <TextView
                             android:id="@+id/tvFirstName"
+                            style="@style/TextColor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/montserratbold"
@@ -111,6 +113,7 @@
                             android:textSize="12sp"/>
                         <TextView
                             android:id="@+id/tvLastName"
+                            style="@style/TextColor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/montserratbold"
@@ -130,6 +133,7 @@
                     android:id="@+id/tvEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    style="@style/TextColor"
                     android:textSize="16sp"
                     android:fontFamily="@font/montserratbold"
                     android:text="galuhyogabagaskarah1@gmail.com"
@@ -144,6 +148,7 @@
                     android:textSize="12sp"/>
                 <TextView
                     android:id="@+id/tvPassword"
+                    style="@style/TextColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="*********"
@@ -178,6 +183,7 @@
                             android:textSize="12sp"/>
                         <TextView
                             android:id="@+id/tvWeight"
+                            style="@style/TextColor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
@@ -199,6 +205,7 @@
                             android:textSize="12sp"/>
                         <TextView
                             android:id="@+id/tvHeight"
+                            style="@style/TextColor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
@@ -220,6 +227,7 @@
                             android:textSize="12sp"/>
                         <TextView
                             android:id="@+id/tvAge"
+                            style="@style/TextColor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
@@ -232,6 +240,28 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            style="@style/TextColor"
+            android:layout_height="wrap_content"
+            android:text="Dark mode Theme"
+            android:fontFamily="@font/montserratbold"/>
+        <Switch
+            android:id="@+id/switch_dark_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:scaleX="1.3"
+            android:layout_marginLeft="5dp"
+            android:scaleY="1.3"
+            android:layout_centerInParent="true" />
+    </LinearLayout>
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/editProfile"
             android:layout_width="match_parent"
@@ -242,7 +272,8 @@
             android:textSize="18dp"
             android:textColor="@color/white"
             android:fontFamily="@font/montserratbold"
-            android:background="@drawable/blue_profile_button"/>
+            style="@style/ButtonProfile"
+            />
 
         <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"
@@ -253,7 +284,7 @@
             android:textColor="@color/white"
             android:fontFamily="@font/montserratbold"
             android:textSize="18dp"
-            android:background="@drawable/blue_profile_button"
+            style="@style/ButtonProfile"
             />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -266,7 +297,7 @@
             android:textColor="@color/white"
             android:fontFamily="@font/montserratbold"
             android:textSize="18dp"
-            android:background="@drawable/red_profile_button"
+            style="@style/RedButtonProfile"
             />
     </LinearLayout>
     </ScrollView>

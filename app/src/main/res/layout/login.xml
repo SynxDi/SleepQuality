@@ -5,7 +5,7 @@
     android:id="@+id/login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradientbackground"
+    style="@style/GradientBackground"
     tools:context=".LoginActivity">
 
 
@@ -14,6 +14,7 @@
         android:layout_width="172dp"
         android:layout_height="146dp"
         android:layout_marginTop="150dp"
+        style="@style/ImageColor"
         android:src="@drawable/logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -41,7 +42,7 @@
         android:layout_marginTop="20dp"
         android:hint="Email (Example@email.com)"
         android:ems="10"
-        android:background="@drawable/etlogin"
+        style="@style/CardBackground"
         android:textSize="14sp"
         android:fontFamily="@font/montserratbold"
         android:inputType="textEmailAddress"
@@ -55,8 +56,8 @@
         android:layout_width="342dp"
         android:layout_height="58dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/etlogin"
         android:ems="10"
+        style="@style/CardBackground"
         android:fontFamily="@font/montserratbold"
         android:hint="Password\n(Contain Upper Letter and Number)"
         android:inputType="textPassword"

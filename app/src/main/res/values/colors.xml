@@ -3,4 +3,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="sleep_blue">#FF3F51B5</color>
+
+    <color name="colorPrimary">#6200EE</color>
+    <color name="darkbackground">#0D0D0D</color>
+    <color name="cardBackground">#1A1E2E</color>
+    <color name="lightTint">#202E77</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    
 </resources>

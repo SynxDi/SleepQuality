@@ -1,11 +1,13 @@
 package com.example.sleepqualitylogin;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -24,6 +26,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -63,6 +66,7 @@ public class AlarmFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -87,6 +91,7 @@ public class AlarmFragment extends Fragment {
         TextView helloText = view.findViewById(R.id.helloText);
         helloText.setText("Hello, " + firstName + " " + lastName);
         Log.d("ini age", age);
+
 
         TextView sleepAvgText = view.findViewById(R.id.sleepAvgText);
         TextView qualitySummaryText = view.findViewById(R.id.qualitySummaryText);
@@ -184,6 +189,8 @@ public class AlarmFragment extends Fragment {
             }
         });
 
+
+
         sleepButton.setOnClickListener(v -> {
             String checkUniqueKey = sharedPreferences.getString("uniqueKey", null);
             if (checkUniqueKey != null) {
@@ -220,6 +227,16 @@ public class AlarmFragment extends Fragment {
             Intent intent = new Intent(getActivity(), AnalysisSleepActivity.class);
             startActivity(intent);
         });
+    }
+
+
+
+    private void setAppTheme(boolean isDarkMode) {
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 
     private void updateChart(BarChart barChart, ArrayList<BarEntry> entries, ArrayList<String> labels) {

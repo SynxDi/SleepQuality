@@ -5,11 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,9 @@ import com.google.firebase.auth.FirebaseAuth;
 public class ProfileFragment extends Fragment {
 
     private FirebaseAuth mAuth;
+
+    private Switch switchDarkMode;
+    private SharedPreferences sharedThemePreferences;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -52,6 +58,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
@@ -59,40 +66,63 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialize FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
 
-        // Load user data
         loadUserData(view);
 
-        // Set up EditProfile button click listener
-        AppCompatButton editProfileBt = view.findViewById(R.id.editProfile);
-        editProfileBt.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-            String userId = mAuth.getCurrentUser ().getUid(); // Get the current user's ID
-            intent.putExtra("USER_ID", userId);
-            startActivityForResult(intent, 1); // Start activity for result
-        });
+        sharedThemePreferences = requireActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
 
-        // Set up Logout button click listener
+        String userId = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : null;
+
+        // Inisialisasi Switch
+        switchDarkMode = view.findViewById(R.id.switch_dark_mode);
+
+        boolean isDarkMode = false;
+        if (userId != null) {
+            isDarkMode = sharedThemePreferences.getBoolean("DARK_MODE_" + userId, false);
+        }
+        setAppTheme(isDarkMode);
+        switchDarkMode.setChecked(isDarkMode);
+
+        // EditProfile Button dll (tidak berubah)
+
+        // Logout button klik
         AppCompatButton buttonLogout = view.findViewById(R.id.buttonLogout);
         buttonLogout.setOnClickListener(v -> {
-            // Clear SharedPreferences if needed
-            SharedPreferences prefs = requireActivity().getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
-            prefs.edit().clear().apply();
+            // Saat logout, hapus hanya data user yang lain, bukan Dark Mode
+            if (userId != null) {
+                SharedPreferences.Editor editor = sharedThemePreferences.edit();
 
-            // Logout from Firebase
+                // Contoh hapus data user (firstName, lastName dll) tapi jangan hapus DARK_MODE user lain
+                editor.remove("firstName");
+                editor.remove("lastName");
+                editor.remove("user_email");
+                editor.remove("weight");
+                editor.remove("height");
+                editor.remove("age");
+                editor.apply();
+            }
             if (mAuth != null) {
                 mAuth.signOut();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             } else {
-                // Handle case if mAuth is null
                 Toast.makeText(getActivity(), "Gagal logout, coba lagi.", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Listener switch Dark Mode simpan ke key per user
+        switchDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            setAppTheme(isChecked);
+            SharedPreferences.Editor editor = sharedThemePreferences.edit();
+            if (userId != null) {
+                editor.putBoolean("DARK_MODE_" + userId, isChecked);
+                editor.apply();
+            }
+        });
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -143,6 +173,15 @@ public class ProfileFragment extends Fragment {
             tvAge.setText("-");
         } else {
             tvAge.setText(age);
+        }
+    }
+
+    // Method to set the app theme based on the dark mode preference
+    private void setAppTheme(boolean isDarkMode) {
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES); // Set dark theme
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO); // Set light theme
         }
     }
 }

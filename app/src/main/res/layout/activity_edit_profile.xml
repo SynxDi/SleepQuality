@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/gradientbackground"
+    style="@style/GradientBackground"
     android:padding="16dp">
 
     <LinearLayout
@@ -49,6 +49,7 @@
                             android:id="@+id/etFirstName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            style="@style/TextColor"
                             android:fontFamily="@font/montserratbold"
                             android:text="Galuh"
                             android:textSize="16sp"/>
@@ -69,6 +70,7 @@
                             android:id="@+id/etLastName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            style="@style/TextColor"
                             android:fontFamily="@font/montserratbold"
                             android:text="Bagaskara"
                             android:textSize="16sp"/>
@@ -87,6 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="16sp"
+                    style="@style/TextColor"
                     android:fontFamily="@font/montserratbold"
                     android:text="galuhyogabagaskarah1@gmail.com"
                     android:paddingBottom="8dp"/>
@@ -101,6 +104,7 @@
                 <TextView
                     android:id="@+id/etPassword"
                     android:layout_width="wrap_content"
+                    style="@style/TextColor"
                     android:layout_height="wrap_content"
                     android:text="*********"
                     android:fontFamily="@font/montserratbold"
@@ -138,6 +142,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
+                            style="@style/TextColor"
                             android:fontFamily="@font/montserratbold"
                             android:text="95kg"
                             android:textSize="16sp"/>
@@ -159,6 +164,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
+                            style="@style/TextColor"
                             android:fontFamily="@font/montserratbold"
                             android:text="180cm"
                             android:textSize="16sp"/>
@@ -179,6 +185,7 @@
                             android:id="@+id/etAge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            style="@style/TextColor"
                             android:textStyle="bold"
                             android:fontFamily="@font/montserratbold"
                             android:text="22"
@@ -197,9 +204,8 @@
             android:text="Edit Profile"
             android:textAllCaps="false"
             android:textSize="18dp"
-            android:textColor="#5D7EF2"
             android:fontFamily="@font/montserratbold"
-            android:background="@drawable/white_button"/>
+            style="@style/EditButtonProfile"/>
 
     </LinearLayout>
 </LinearLayout>
