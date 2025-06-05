@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         // untuk Warna Teks Sign Up Merah Putih
         TextView textView = findViewById(R.id.textsignup);
         String fullText = "Don't have an account? Sign up";
@@ -96,7 +97,6 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
@@ -106,6 +106,12 @@ public class LoginActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("user_email", email);
                             editor.apply(); // atau .commit() jika ingin sinkron
+
+                            // Ambil status Dark Mode dari SharedPreferences
+                            String userId = user != null ? user.getUid() : null;
+                            boolean isDarkMode = sharedPreferences.getBoolean("DARK_MODE_" + userId, false);
+                            setAppTheme(isDarkMode); // Setel tema sesuai preferensi
+
                             startActivity(new Intent(LoginActivity.this, MainNavigation.class));
                             finish();
                             if (user != null) {
@@ -121,9 +127,18 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                         }
                     });
-            });
+        });
+    }
 
+    // Method untuk mengatur tema
+    private void setAppTheme(boolean isDarkMode) {
+        if (isDarkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+    }
+
     private void fetchUserData(String email) {
         db.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -161,5 +176,4 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
 }
