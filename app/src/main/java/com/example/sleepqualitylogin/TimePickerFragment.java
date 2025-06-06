@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import android.content.Context;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,6 +65,12 @@ public class TimePickerFragment extends DialogFragment {
                 // Menghitung timestamp dari tanggal dan waktu yang dipilih
                 long sleepTime = new java.util.GregorianCalendar(year, month, day, hour, minute).getTimeInMillis();
                 long wakeupTime = 0;
+                long currentTime = System.currentTimeMillis();
+
+                if (sleepTime > currentTime) {
+                    Toast.makeText(getActivity(), "Waktu tidur tidak boleh di masa depan.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // Membuat format tanggal untuk validasi
                 String selectedDate = String.format("%04d-%02d-%02d", year, month + 1, day); // Format yyyy-MM-dd

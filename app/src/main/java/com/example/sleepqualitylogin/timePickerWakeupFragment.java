@@ -69,6 +69,12 @@ public class timePickerWakeupFragment extends DialogFragment {
                 // Menghitung timestamp dari tanggal dan waktu yang dipilih
                 long wakeupTime = new java.util.GregorianCalendar(year, month, day, hour, minute).getTimeInMillis();
 
+                long currentTime = System.currentTimeMillis();
+
+                if (wakeupTime > currentTime) {
+                    Toast.makeText(getActivity(), "Waktu Bangun Tidur tidak boleh di masa depan.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // Query untuk memeriksa apakah sudah ada entri dengan email dan tanggal yang relevan
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MyAppPrefs", getActivity().MODE_PRIVATE);

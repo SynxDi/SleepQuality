@@ -193,24 +193,24 @@ public class AlarmFragment extends Fragment {
             }
         });
 
-//        if (age == null || age.isEmpty() ||
-//                weight == null || weight.isEmpty() ||
-//                height == null || height.isEmpty()) {
-//
-//            // Tampilkan alert
-//            new AlertDialog.Builder(getActivity())
-//                    .setTitle("Data Tidak Lengkap")
-//                    .setMessage("Silakan lengkapi profil Anda terlebih dahulu.")
-//                    .setPositiveButton("Edit Profil", new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-//                            startActivity(intent);
-//                        }
-//                    })
-//                    .setCancelable(false)
-//                    .show();
-//        }
+        if (age == null || age.isEmpty() ||
+                weight == null || weight.isEmpty() ||
+                height == null || height.isEmpty()) {
+
+            // Tampilkan alert
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Data Tidak Lengkap")
+                    .setMessage("Silakan lengkapi profil Anda terlebih dahulu.")
+                    .setPositiveButton("Edit Profil", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .setCancelable(false)
+                    .show();
+        }
 
 
 
