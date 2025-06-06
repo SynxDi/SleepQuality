@@ -101,6 +101,14 @@ public class RegisterActivity extends AppCompatActivity {
             mAuth.createUserWithEmailAndPassword(email, password)
                        .addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
+
+                    mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(verificationTask -> {
+                        if (verificationTask.isSuccessful()) {
+                            Toast.makeText(this, "Email verifikasi telah dikirim ke " + email, Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(this, "Gagal mengirim email verifikasi: " + verificationTask.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
                     // Dapatkan UID pengguna yang baru dibuat
                     String userId = mAuth.getCurrentUser ().getUid();
                     // Buat objek User

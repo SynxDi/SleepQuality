@@ -101,32 +101,43 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             // Login berhasil
-                            FirebaseUser  user = mAuth.getCurrentUser ();
-                            SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("user_email", email);
-                            editor.apply(); // atau .commit() jika ingin sinkron
+                            FirebaseUser user = mAuth.getCurrentUser();
 
-                            // Ambil status Dark Mode dari SharedPreferences
-                            String userId = user != null ? user.getUid() : null;
-                            boolean isDarkMode = sharedPreferences.getBoolean("DARK_MODE_" + userId, false);
-                            setAppTheme(isDarkMode); // Setel tema sesuai preferensi
+                            if (user != null && user.isEmailVerified()) {
+                                // Simpan email ke SharedPreferences
+                                SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("user_email", email);
+                                editor.apply();
 
-                            startActivity(new Intent(LoginActivity.this, MainNavigation.class));
-                            finish();
-                            if (user != null) {
-                                // Fetch user data from Realtime Database
+                                // Ambil status Dark Mode dari SharedPreferences
+                                String userId = user.getUid();
+                                boolean isDarkMode = sharedPreferences.getBoolean("DARK_MODE_" + userId, false);
+                                setAppTheme(isDarkMode);
+
+                                // Ambil data pengguna
                                 fetchUserData(user.getEmail());
+
+                                // Navigasi ke MainNavigation
+                                startActivity(new Intent(LoginActivity.this, MainNavigation.class));
+                                finish();
+
+                            } else {
+                                // Email belum diverifikasi
+                                Toast.makeText(LoginActivity.this, "Silakan verifikasi email Anda terlebih dahulu.", Toast.LENGTH_LONG).show();
+                                mAuth.signOut(); // Logout agar tidak tetap login meskipun belum verifikasi
                             }
+
                         } else {
-                            // Tangani kesalahan
-                            String errorMessage = "Authentication failed.";
+                            // Tangani kesalahan login
+                            String errorMessage = "Gagal login.";
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 errorMessage = "Email atau password salah.";
                             }
                             Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                         }
                     });
+
         });
     }
 
