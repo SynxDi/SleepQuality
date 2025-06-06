@@ -1,12 +1,14 @@
 package com.example.sleepqualitylogin;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
@@ -87,6 +89,8 @@ public class AlarmFragment extends Fragment {
         String firstName = sharedPreferences.getString("firstName", "First Name");
         String lastName = sharedPreferences.getString("lastName", "Last Name");
         String age = sharedPreferences.getString("age", "Age");
+        String weight = sharedPreferences.getString("weight", "Weight");
+        String height = sharedPreferences.getString("height", "Height");
 
         TextView helloText = view.findViewById(R.id.helloText);
         helloText.setText("Hello, " + firstName + " " + lastName);
@@ -188,6 +192,25 @@ public class AlarmFragment extends Fragment {
                 Log.e("AlarmFragment", "Database error", error.toException());
             }
         });
+
+//        if (age == null || age.isEmpty() ||
+//                weight == null || weight.isEmpty() ||
+//                height == null || height.isEmpty()) {
+//
+//            // Tampilkan alert
+//            new AlertDialog.Builder(getActivity())
+//                    .setTitle("Data Tidak Lengkap")
+//                    .setMessage("Silakan lengkapi profil Anda terlebih dahulu.")
+//                    .setPositiveButton("Edit Profil", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+//                            startActivity(intent);
+//                        }
+//                    })
+//                    .setCancelable(false)
+//                    .show();
+//        }
 
 
 

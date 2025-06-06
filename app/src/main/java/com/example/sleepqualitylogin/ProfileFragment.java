@@ -84,7 +84,12 @@ public class ProfileFragment extends Fragment {
         setAppTheme(isDarkMode);
         switchDarkMode.setChecked(isDarkMode);
 
-        // EditProfile Button dll (tidak berubah)
+        AppCompatButton editProfileBt = view.findViewById(R.id.editProfile);
+        editProfileBt.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            intent.putExtra("USER_ID", userId);
+            startActivityForResult(intent, 1); // Start activity for result
+        });
 
         // Logout button klik
         AppCompatButton buttonLogout = view.findViewById(R.id.buttonLogout);
