@@ -3,7 +3,7 @@
         <!-- Override values for night mode -->
     </style>
 
-    <style name="ScreenBackground"><item name="android:background">@color/darkbackground</item></style>
+    <style name="ScreenBackground"><item name="android:background">@color/darkGrey</item></style>
     <style name="TextColor"><item name="android:textColor">@color/white</item></style>
     <style name="GradientBackground"><item name="android:background">@drawable/darkgradientbackground</item></style>
     <style name="RoundedBackground"><item name="android:background">@drawable/rounded_top_dark</item></style>
@@ -11,5 +11,10 @@
     <style name="RedButtonProfile"><item name="android:background">@drawable/darkred_profile_button</item></style>
     <style name="ButtonProfile"><item name="android:background">@drawable/darkblue_profile_button</item></style>
     <style name="EditButtonProfile"><item name="android:background">@drawable/darkblue_profile_button</item></style>
+    <style name="AlarmContainer"><item name="android:background">@drawable/dark_alarm_container_card</item></style>
     <style name="ImageColor"><item name="tint">@color/white</item></style>
+    <style name="AlarmGradientA"><item name="android:background">@drawable/alarm_gradient_a_dark</item></style>
+    <style name="AlarmGradientB"><item name="android:background">@drawable/alarm_gradient_b_dark</item></style>
+    <style name="AlarmGradientC"><item name="android:background">@drawable/alarm_gradient_c_dark</item></style>
+    <style name="AlarmGradientD"><item name="android:background">@drawable/alarm_gradient_d_dark</item></style>
 </resources>

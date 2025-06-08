@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -21,6 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -80,6 +84,8 @@ public class AlarmFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Context context = getContext();
         Button sleepButton = view.findViewById(R.id.sleepButton);
         Button wakeupButton = view.findViewById(R.id.wakeupButton);
         Button AnalysisButton = view.findViewById(R.id.anotherButton);
@@ -111,6 +117,8 @@ public class AlarmFragment extends Fragment {
 
         Date today = new Date();
         Date sevenDaysAgo = new Date(today.getTime() - (7L * 24 * 60 * 60 * 1000));
+
+
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -168,20 +176,45 @@ public class AlarmFragment extends Fragment {
                 }
                 float avgHours = entries.size() > 0 ? totalHours / entries.size() : 0;
 
+                boolean isDarkMode = isDarkModeEnabled(context, userId);
+
+                if (isDarkMode) {
+                    sleepButton.setBackgroundTintList(ColorStateList.valueOf(
+                            ContextCompat.getColor(requireContext(), R.color.darkGreen)));
+                    wakeupButton.setBackgroundTintList(ColorStateList.valueOf(
+                            ContextCompat.getColor(requireContext(), R.color.darkOrange)));
+                } else {
+                    sleepButton.setBackgroundTintList(ColorStateList.valueOf(
+                            ContextCompat.getColor(requireContext(), R.color.lightGreen)));
+                    wakeupButton.setBackgroundTintList(ColorStateList.valueOf(
+                            ContextCompat.getColor(requireContext(), R.color.orange)));
+                }
+
+
+
+
                 if (avgHours >= 8) {
                     qualitySummaryText.setText("Well rested");
-                    qualitySummaryBackground.setBackgroundResource(R.drawable.alarm_gradient_a);
-
+                    qualitySummaryBackground.setBackgroundResource(
+                            isDarkMode ? R.drawable.alarm_gradient_a_dark : R.drawable.alarm_gradient_a
+                    );
                 } else if (avgHours >= 6) {
                     qualitySummaryText.setText("Decent sleep");
-                    qualitySummaryBackground.setBackgroundResource(R.drawable.alarm_gradient_b);
+                    qualitySummaryBackground.setBackgroundResource(
+                            isDarkMode ? R.drawable.alarm_gradient_b_dark : R.drawable.alarm_gradient_b
+                    );
                 } else if (avgHours >= 4) {
                     qualitySummaryText.setText("Lack of sleep");
-                    qualitySummaryBackground.setBackgroundResource(R.drawable.alarm_gradient_c);
+                    qualitySummaryBackground.setBackgroundResource(
+                            isDarkMode ? R.drawable.alarm_gradient_c_dark : R.drawable.alarm_gradient_c
+                    );
                 } else {
                     qualitySummaryText.setText("Sleep Deprived");
-                    qualitySummaryBackground.setBackgroundResource(R.drawable.alarm_gradient_d);
+                    qualitySummaryBackground.setBackgroundResource(
+                            isDarkMode ? R.drawable.alarm_gradient_d_dark : R.drawable.alarm_gradient_d
+                    );
                 }
+
 
                 updateChart(barChart, entries, dayLabels);
                 sleepAvgText.setText(String.format(Locale.getDefault(), "AVG %.0fH", avgHours));
@@ -272,7 +305,6 @@ public class AlarmFragment extends Fragment {
 
         barChart.setData(barData);
         barChart.setFitBars(true);
-        barChart.getLegend().setEnabled(false);
         barChart.getDescription().setEnabled(false);
 
         XAxis xAxis = barChart.getXAxis();
@@ -280,6 +312,7 @@ public class AlarmFragment extends Fragment {
         xAxis.setGranularity(1f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
+
 
         YAxis leftAxis = barChart.getAxisLeft();
         leftAxis.setGranularity(1f);
@@ -291,6 +324,30 @@ public class AlarmFragment extends Fragment {
         });
 
         barChart.getAxisRight().setEnabled(false);
+
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        boolean isDarkMode = isDarkModeEnabled(getContext(), userId);
+
+
+        Legend legend = barChart.getLegend();
+        legend.setEnabled(true);
+        if (isDarkMode) {
+            legend.setTextColor(Color.WHITE);
+            xAxis.setTextColor(Color.WHITE);
+            leftAxis.setTextColor(Color.WHITE);
+        } else {
+            legend.setTextColor(Color.BLACK);
+            xAxis.setTextColor(Color.BLACK);
+            leftAxis.setTextColor(Color.BLACK);
+        }
+
         barChart.invalidate();
+    }
+
+
+    private boolean isDarkModeEnabled(Context context, String userId) {
+        SharedPreferences prefs = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        return prefs.getBoolean("DARK_MODE_" + userId, false);
     }
 }

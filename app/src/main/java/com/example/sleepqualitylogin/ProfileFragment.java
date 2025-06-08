@@ -189,4 +189,6 @@ public class ProfileFragment extends Fragment {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO); // Set light theme
         }
     }
+
+
 }

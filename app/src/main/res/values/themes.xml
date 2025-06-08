@@ -11,5 +11,10 @@
     <style name="RedButtonProfile"><item name="android:background">@drawable/red_profile_button</item></style>
     <style name="ButtonProfile"><item name="android:background">@drawable/blue_profile_button</item></style>
     <style name="EditButtonProfile"><item name="android:background">@drawable/white_button</item></style>
+    <style name="AlarmContainer"><item name="android:background">@drawable/alarm_container_card</item></style>
     <style name="ImageColor"><item name="tint">@color/lightTint</item></style>
+    <style name="AlarmGradientA"><item name="android:background">@drawable/alarm_gradient_a</item></style>
+    <style name="AlarmGradientB"><item name="android:background">@drawable/alarm_gradient_b</item></style>
+    <style name="AlarmGradientC"><item name="android:background">@drawable/alarm_gradient_c</item></style>
+    <style name="AlarmGradientD"><item name="android:background">@drawable/alarm_gradient_d</item></style>
 </resources>

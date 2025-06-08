@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,6 +43,8 @@ public class AnalysisSleepActivity extends AppCompatActivity {
     private static final String TAG = "TrackerActivity";
 
     private TextView tvEmpty;
+    String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    Context context = this;
 
     private TextView summaryHour, summaryMinutes, summaryTitle, summaryTips;
     private RelativeLayout summaryBackground;
@@ -49,6 +52,7 @@ public class AnalysisSleepActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_analysis_sleep);
 
         SharedPreferences sharedPreferences = getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
@@ -141,20 +145,21 @@ public class AnalysisSleepActivity extends AppCompatActivity {
                     summaryHour.setText(hours + "H");
                     summaryMinutes.setText(minutes + "M");
 
+                    boolean isDarkMode =isDarkModeEnabled(context, userId);
                     if (hours >= 8) {
-                        summaryBackground.setBackgroundResource(R.drawable.alarm_gradient_a);
+                        summaryBackground.setBackgroundResource(isDarkMode ? R.drawable.alarm_gradient_a_dark : R.drawable.alarm_gradient_a);
                         summaryTitle.setText("Well rested");
                         summaryTips.setText("You're getting enough sleep!");
                     } else if (hours >= 6) {
-                        summaryBackground.setBackgroundResource(R.drawable.alarm_gradient_b);
+                        summaryBackground.setBackgroundResource(isDarkMode ? R.drawable.alarm_gradient_b_dark : R.drawable.alarm_gradient_b);
                         summaryTitle.setText("Decent sleep");
                         summaryTips.setText("Try to get a little more rest!");
                     } else if (hours >= 4) {
-                        summaryBackground.setBackgroundResource(R.drawable.alarm_gradient_c);
+                        summaryBackground.setBackgroundResource(isDarkMode ? R.drawable.alarm_gradient_c_dark : R.drawable.alarm_gradient_c);
                         summaryTitle.setText("Lack of sleep");
                         summaryTips.setText("Get some more sleep!");
                     } else {
-                        summaryBackground.setBackgroundResource(R.drawable.alarm_gradient_d);
+                        summaryBackground.setBackgroundResource(isDarkMode ? R.drawable.alarm_gradient_d_dark : R.drawable.alarm_gradient_d);
                         summaryTitle.setText("Severely sleep-deprived");
                         summaryTips.setText("Sleep now if possible!");
                     }
@@ -226,14 +231,15 @@ public class AnalysisSleepActivity extends AppCompatActivity {
                 long hours = totalMinutes / 60;
                 long minutes = totalMinutes % 60;
 
+                boolean isDarkMode = isDarkModeEnabled(context, userId);
                 if (hours >= 8) {
-                    holder.background.setBackgroundResource(R.drawable.alarm_gradient_a);
+                    holder.background.setBackgroundResource( isDarkMode ? R.drawable.alarm_gradient_a_dark : R.drawable.alarm_gradient_a);
                 } else if (hours >= 6) {
-                    holder.background.setBackgroundResource(R.drawable.alarm_gradient_b);
+                    holder.background.setBackgroundResource( isDarkMode ? R.drawable.alarm_gradient_b_dark : R.drawable.alarm_gradient_b);
                 } else if (hours >= 4) {
-                    holder.background.setBackgroundResource(R.drawable.alarm_gradient_c);
+                    holder.background.setBackgroundResource( isDarkMode ? R.drawable.alarm_gradient_c_dark : R.drawable.alarm_gradient_c);
                 } else {
-                    holder.background.setBackgroundResource(R.drawable.alarm_gradient_d);
+                    holder.background.setBackgroundResource( isDarkMode ? R.drawable.alarm_gradient_d_dark : R.drawable.alarm_gradient_d);
                 }
 
                 holder.durationHourText.setText(hours + "H");
@@ -268,5 +274,9 @@ public class AnalysisSleepActivity extends AppCompatActivity {
                 background = itemView.findViewById(R.id.background);
             }
         }
+    }
+    private boolean isDarkModeEnabled(Context context, String userId) {
+        SharedPreferences prefs = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        return prefs.getBoolean("DARK_MODE_" + userId, false);
     }
 }

@@ -14,7 +14,7 @@
         android:layout_alignBottom="@+id/topArea"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="-25dp"
-        android:background="@drawable/gradientbackground" />
+        style="@style/GradientBackground" />
 
     <ImageView
         android:id="@+id/logo"
@@ -92,7 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/topArea"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/alarm_container_card">
+        style="@style/AlarmContainer" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -113,7 +113,7 @@
                     android:layout_alignParentTop="true"
                     android:gravity="center_vertical"
                     android:text="Summary"
-                    android:textColor="#333333"
+                    style="@style/TextColor"
                     android:textSize="26sp"
                     android:textStyle="bold" />
 
