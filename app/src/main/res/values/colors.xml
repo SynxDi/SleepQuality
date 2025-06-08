@@ -12,9 +12,9 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="lightGreen">#4CAF50</color>
-    <color name="darkGreen">#66BB6A</color>
+    <color name="darkGreen">#507F4E</color>
     <color name="orange">#FF9800</color>
-    <color name="darkOrange">#FFA726 </color>
+    <color name="darkOrange">#CC7A29 </color>
 
     
 </resources>
