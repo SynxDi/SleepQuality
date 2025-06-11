@@ -275,17 +275,6 @@
             style="@style/ButtonProfile"
             />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="12dp"
-            android:textAllCaps="false"
-            android:text="Change Password"
-            android:textColor="@color/white"
-            android:fontFamily="@font/montserratbold"
-            android:textSize="18dp"
-            style="@style/ButtonProfile"
-            />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonLogout"

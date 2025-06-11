@@ -4,6 +4,7 @@
     </style>
 
     <style name="ScreenBackground"><item name="android:background">@color/darkGrey</item></style>
+    <style name="ArticleBackground"><item name="android:background">@drawable/dark_article_background</item></style>
     <style name="TextColor"><item name="android:textColor">@color/white</item></style>
     <style name="GradientBackground"><item name="android:background">@drawable/darkgradientbackground</item></style>
     <style name="RoundedBackground"><item name="android:background">@drawable/rounded_top_dark</item></style>

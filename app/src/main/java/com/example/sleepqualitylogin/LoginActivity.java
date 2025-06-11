@@ -76,6 +76,13 @@ public class LoginActivity extends AppCompatActivity {
             String email = emailInput.getText().toString().trim();
             String password = passwordInput.getText().toString().trim();
 
+
+            if (email.equals("admin") && password.equals("admin")) {
+                Intent admin = new Intent(LoginActivity.this, AdminActivity.class);
+                startActivity(admin);
+                return;
+            }
+
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Isi semua kolom", Toast.LENGTH_SHORT).show();
                 return;
@@ -91,11 +98,6 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            if (email.equals("admin") && password.equals("admin")) {
-                Intent admin = new Intent(LoginActivity.this, AdminActivity.class);
-                startActivity(admin);
-                return;
-            }
 
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {

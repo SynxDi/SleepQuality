@@ -1,6 +1,7 @@
 package com.example.sleepqualitylogin;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -20,6 +21,7 @@ public class ArticleDetail extends AppCompatActivity {
         TextView textTitle = findViewById(R.id.textTitleDetail);
         TextView textAuthor = findViewById(R.id.textAuthorDetail);
         TextView textContent = findViewById(R.id.textContentDetail);
+        ImageButton btnBack = findViewById(R.id.btnBack); // Inisialisasi tombol kembali
 
         // Terima data dari Intent
         String title = getIntent().getStringExtra(EXTRA_TITLE);
@@ -29,5 +31,8 @@ public class ArticleDetail extends AppCompatActivity {
         textTitle.setText(title);
         textAuthor.setText("Author: " + author);
         textContent.setText(content);
+
+        // Set listener untuk tombol kembali
+        btnBack.setOnClickListener(v -> finish()); // Kembali ke activity sebelumnya
     }
 }

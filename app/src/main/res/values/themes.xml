@@ -1,6 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.SleepQualityLogin" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Light mode default -->
     </style>
     
     <style name="ScreenBackground"><item name="android:background">@color/white</item></style>
@@ -17,4 +16,6 @@
     <style name="AlarmGradientB"><item name="android:background">@drawable/alarm_gradient_b</item></style>
     <style name="AlarmGradientC"><item name="android:background">@drawable/alarm_gradient_c</item></style>
     <style name="AlarmGradientD"><item name="android:background">@drawable/alarm_gradient_d</item></style>
+
+
 </resources>
