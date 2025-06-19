@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Isi semua kolom", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Fill in all columns", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -126,15 +126,15 @@ public class LoginActivity extends AppCompatActivity {
 
                             } else {
                                 // Email belum diverifikasi
-                                Toast.makeText(LoginActivity.this, "Silakan verifikasi email Anda terlebih dahulu.", Toast.LENGTH_LONG).show();
+                                Toast.makeText(LoginActivity.this, "Please verify your email first.", Toast.LENGTH_LONG).show();
                                 mAuth.signOut(); // Logout agar tidak tetap login meskipun belum verifikasi
                             }
 
                         } else {
                             // Tangani kesalahan login
-                            String errorMessage = "Gagal login.";
+                            String errorMessage = "Login failed.";
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                errorMessage = "Email atau password salah.";
+                                errorMessage = "Incorrect email or password.";
                             }
                             Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                         }

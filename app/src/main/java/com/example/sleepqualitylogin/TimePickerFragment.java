@@ -68,7 +68,7 @@ public class TimePickerFragment extends DialogFragment {
                 long currentTime = System.currentTimeMillis();
 
                 if (sleepTime > currentTime) {
-                    Toast.makeText(getActivity(), "Waktu tidur tidak boleh di masa depan.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Bedtime should not be in the future.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 

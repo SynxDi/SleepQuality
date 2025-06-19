@@ -68,7 +68,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
             // Validate input
             if (firstName.isEmpty() || lastName.isEmpty() || weight.isEmpty() || height.isEmpty() || age.isEmpty()) {
-                Toast.makeText(EditProfileActivity.this, "Isi semua kolom", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfileActivity.this, "Fill in all columns", Toast.LENGTH_SHORT).show();
                 return;
             }
 

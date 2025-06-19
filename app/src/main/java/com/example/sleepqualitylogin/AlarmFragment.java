@@ -232,9 +232,9 @@ public class AlarmFragment extends Fragment {
 
             // Tampilkan alert
             new AlertDialog.Builder(getActivity())
-                    .setTitle("Data Tidak Lengkap")
-                    .setMessage("Silakan lengkapi profil Anda terlebih dahulu.")
-                    .setPositiveButton("Edit Profil", new DialogInterface.OnClickListener() {
+                    .setTitle("Incomplete Data")
+                    .setMessage("Please complete your profile first.")
+                    .setPositiveButton("Edit Profile", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(getActivity(), EditProfileActivity.class);
@@ -252,7 +252,7 @@ public class AlarmFragment extends Fragment {
             if (checkUniqueKey != null) {
                 new android.app.AlertDialog.Builder(getActivity())
                         .setTitle("Confirm Action")
-                        .setMessage("Anda sebelumnya telah memasukkan jam tidur. Apakah Anda ingin menghapus?")
+                        .setMessage("You have previously entered sleep hours. Do you want to delete?")
                         .setPositiveButton("Yes", (dialogInterface, i) -> {
                             databaseReference.child(checkUniqueKey).removeValue()
                                     .addOnSuccessListener(aVoid -> {
@@ -296,7 +296,7 @@ public class AlarmFragment extends Fragment {
     }
 
     private void updateChart(BarChart barChart, ArrayList<BarEntry> entries, ArrayList<String> labels) {
-        BarDataSet dataSet = new BarDataSet(entries, "Durasi Tidur");
+        BarDataSet dataSet = new BarDataSet(entries, "Sleep Duration");
         dataSet.setColor(getResources().getColor(R.color.sleep_blue));
 
         BarData barData = new BarData(dataSet);

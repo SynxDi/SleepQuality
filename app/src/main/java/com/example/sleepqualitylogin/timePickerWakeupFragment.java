@@ -72,7 +72,7 @@ public class timePickerWakeupFragment extends DialogFragment {
                 long currentTime = System.currentTimeMillis();
 
                 if (wakeupTime > currentTime) {
-                    Toast.makeText(getActivity(), "Waktu Bangun Tidur tidak boleh di masa depan.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Wake Up Time cannot be in the future.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -88,15 +88,15 @@ public class timePickerWakeupFragment extends DialogFragment {
                                 editor.putString("uniqueKey", null);
                                 editor.apply();
                                 Log.d("Firebase", "WakeUpTime updated successfully for ID: " + uniqueKey);
-                                Toast.makeText(getActivity(), "Waktu bangun berhasil disimpan.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Wake up time successfully saved.", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             })
                             .addOnFailureListener(e -> {
                                 Log.e("Firebase", "Gagal menyimpan wakeUpTime: " + e.getMessage());
-                                Toast.makeText(getActivity(), "Gagal menyimpan waktu bangun.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Failed to save wake time.", Toast.LENGTH_SHORT).show();
                             });
                 } else {
-                    Toast.makeText(getActivity(), "ID entri tidak ditemukan.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Entry ID not found.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

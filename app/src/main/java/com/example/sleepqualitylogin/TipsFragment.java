@@ -68,7 +68,7 @@ public class TipsFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Gagal memuat artikel: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Failed to load article: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

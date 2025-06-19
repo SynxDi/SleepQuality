@@ -39,7 +39,7 @@ public class AdminActivity extends AppCompatActivity {
             String content = berita.getText().toString().trim();
 
             if (authorName.isEmpty() || title.isEmpty() || content.isEmpty()) {
-                Toast.makeText(AdminActivity.this, "Isi semua kolom", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminActivity.this, "Fill in all columns", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -60,13 +60,13 @@ public class AdminActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Update last key in the database
                                     mIndexRef.setValue(newIndex);
-                                    Toast.makeText(AdminActivity.this, "Artikel berhasil disimpan", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AdminActivity.this, "Article saved successfully", Toast.LENGTH_SHORT).show();
                                     // Clear EditText after successful save
                                     author.setText("");
                                     judul.setText("");
                                     berita.setText("");
                                 } else {
-                                    Toast.makeText(AdminActivity.this, "Gagal menyimpan artikel: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(AdminActivity.this, "Failed to save article:" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             });
                 }

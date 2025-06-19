@@ -79,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
             String confirmPassword = confirmPasswordInput.getText().toString().trim();
 
             if (email.isEmpty() || password.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
-                Toast.makeText(this, "Isi semua kolom", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Fill in all columns", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -104,9 +104,9 @@ public class RegisterActivity extends AppCompatActivity {
 
                     mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(verificationTask -> {
                         if (verificationTask.isSuccessful()) {
-                            Toast.makeText(this, "Email verifikasi telah dikirim ke " + email, Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, "A verification email has been sent to " + email, Toast.LENGTH_LONG).show();
                         } else {
-                            Toast.makeText(this, "Gagal mengirim email verifikasi: " + verificationTask.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, "Failed to send verification email: " + verificationTask.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
                     // Dapatkan UID pengguna yang baru dibuat
@@ -117,15 +117,15 @@ public class RegisterActivity extends AppCompatActivity {
                     mDatabase.child(userId).setValue(user)
                             .addOnCompleteListener(dbTask -> {
                                 if (dbTask.isSuccessful()) {
-                                    Toast.makeText(this, "Register berhasil", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(this, "Register successful", Toast.LENGTH_SHORT).show();
                                     startActivity(new Intent(this, LoginActivity.class));
                                     finish();
                                 } else {
-                                    Toast.makeText(this, "Gagal menyimpan data: " + dbTask.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(this, "Failed to save data: " + dbTask.getException().getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             });
                 } else {
-                    Toast.makeText(this, "Gagal register: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Failed to register: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
         });
